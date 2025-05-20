@@ -8,55 +8,52 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController numberController = TextEditingController();
+  final TextEditingController nameController= TextEditingController();
+  final TextEditingController numberController= TextEditingController();
 
   final List<Map<String, String>> contact = [];
 
-  void addContact() {
-    final name = nameController.text.trim();
-    final number = numberController.text.trim();
+  void addContact(){
+    final name= nameController.text.trim();
+    final number= numberController.text.trim();
 
-    if (name.isEmpty || number.isEmpty) {
+    if (name.isEmpty || number.isEmpty){
       return;
-    }
+    };
     setState(() {
-      contact.add({'name': name, 'number': number});
+      contact.add({'name':name, 'number':number});
       nameController.clear();
       numberController.clear();
     });
   }
 
-  void deleteContact(int index) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Delete Contact"),
-        content: const Text("Are you sure you want to delete?"),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: Icon(Icons.cancel_presentation)
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                contact.removeAt(index);
-              });
-              Navigator.pop(context);
-            },
-            child: Icon(Icons.delete)
-          ),
-        ],
-      ),
+
+  void deleteContact(int index){
+    showDialog(context: context,
+        builder: (context)=>AlertDialog(
+          title: Text("Delete Contract"),
+          content: Text("Are you sure for delete"),
+          actions: [
+            TextButton(onPressed:() => Navigator.pop(context),
+                child: Icon(Icons.cancel_presentation)),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  contact.removeAt(index);
+                });
+                Navigator.pop(context);
+              },
+              child: Icon(Icons.delete)
+            ),
+          ],
+        )
     );
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Contact List"),
+        title: Text("Contract List"),
         centerTitle: true,
         backgroundColor: Colors.blueGrey,
       ),
@@ -69,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: InputDecoration(
                 labelText: 'Name',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10)
                 ),
               ),
             ),
@@ -82,18 +79,19 @@ class _HomeScreenState extends State<HomeScreen> {
               decoration: InputDecoration(
                 labelText: 'Number',
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10)
                 ),
               ),
             ),
           ),
-          SizedBox(
+          Container(
             width: 300,
             child: ElevatedButton(
               onPressed: addContact,
               child: const Text("Add"),
             ),
           ),
+
           Expanded(
             child: contact.isEmpty
                 ? const Center(child: Text("No contacts yet."))
@@ -101,14 +99,17 @@ class _HomeScreenState extends State<HomeScreen> {
               itemCount: contact.length,
               itemBuilder: (context, index) {
                 final contactItem = contact[index];
-                return Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.person),
-                    title: Text(contactItem['name'] ?? ''),
-                    subtitle: Text(contactItem['number'] ?? ''),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () => deleteContact(index),
+                return GestureDetector(
+                  onLongPress: () => deleteContact(index),
+                  child: Card(
+                    child: ListTile(
+                      leading: Icon(Icons.person),
+                      title: Text(contactItem['name'] ?? ''),
+                      subtitle: Text(contactItem['number'] ?? ''),
+                      trailing:
+                        Icon(Icons.call, color: Colors.red),
+
+
                     ),
                   ),
                 );
@@ -117,6 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+
     );
   }
 }
